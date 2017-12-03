@@ -3,6 +3,7 @@ initiator = "pr0blematic"
 terminator = "b0bby3sticks"
 
 # path to the private key for rsa signatures
+# created with the command 'ssh -t rsa'
 private_key = "/home/jsteeves/.ssh/tmp_rsa"
 
 # temporary file for signing the bytecode
