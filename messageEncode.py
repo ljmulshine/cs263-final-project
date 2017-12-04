@@ -118,7 +118,7 @@ if __name__ == "__main__":
         encodeDensity = int(args[3])
         outfile = args[4]
     except:
-        print "usage: python binary_convert.py [image file] [plaintext-file-to-encode] [encode density] [output encoded image file]"
+        print "usage: python messageEncode.py [image file] [plaintext-file-to-encode] [encode density] [output encoded image file]"
         sys.exit(1)
 
     # add Jake's function call1
