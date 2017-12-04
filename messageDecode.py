@@ -119,7 +119,7 @@ def getPayloadLen(im, encodeDensity, pLenID):
     length = ''
     for i in range(0,payloadLenNumPixels):
         length = length + decode(im[i][0],encodeDensity)
-    print(length)
+
     # return payload length in bytes (base 10)
     return (int(length, 2), im[payloadLenNumPixels:])
 
@@ -152,7 +152,7 @@ def bot(imMessage):
     numpixels = H*W
     
     # reshape image with message encoded in pixels
-    messageIm = imMessage.reshape(numpixels*3,1)
+    messageIm = imMessage.reshape(numpixels*4,1)
 
     # indentifier key - ensure that the identifier key size >= (encodeDensity / 8) bytes 
     identifier = "pr0blematic"
@@ -184,7 +184,7 @@ def bot(imMessage):
     print("Payload Length: ", payloadLength, " bytes")
     
     # total number of pixels used
-    numPixels = int(8 * payloadLength / encodeDensity / 3)
+    numPixels = int(8 * payloadLength / encodeDensity / 4)
 
     # get payload
     payload = getPayload(message,encodeDensity,payloadLength)
@@ -204,14 +204,14 @@ f.write(payload)
 # ANALYSIS
 #
 ################################
-im = io.imread('dog.png')
+im = io.imread('transparentImage.png')
 
 # reshape original and encoded image into 1D array
 H = im.shape[0]
 W = im.shape[1]
 np = H*W
-im1D = im.reshape(np*3,1)
-im1D_encoded = imMessage.reshape(np*3,1)
+im1D = im.reshape(np*4,1)
+im1D_encoded = imMessage.reshape(np*4,1)
 
 meanSquaredError = sum([((int(im1D_encoded[i][0]) - int(im1D[i][0]))**2)**(1/2) for i in range(0,np)]) / numPixels
 
