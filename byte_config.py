@@ -6,13 +6,9 @@ initiator = "pr0blematic"
 # openssl genrsa -out [private key] 2048
 # openssl rsa -in [private key] -pubout > [public key]
 private_key = "tmprsa.key"
-public_key = "tmprsa.pub"
 
 # temporary file for signing the bytecode
 tmp_file = "tmp_bytecode.txt"
 
 # the command for signing the bytecode; args: private key, data file
 sign_cmd = "openssl dgst -sha256 -sign {} -out /dev/stdout {}"
-
-# verify command; args: public key, signature, data to check against
-verify_cmd = "openssl dgst -sha256 -verify {} -signature {} {}"
