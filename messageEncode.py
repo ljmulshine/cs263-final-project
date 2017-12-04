@@ -1,5 +1,6 @@
 import sys
 from skimage import io              # install skimage
+import get_byte_code
 
 
 # bytecode is encoded in image starting at upper left pixel 
@@ -20,12 +21,11 @@ from skimage import io              # install skimage
 # return:     array containing N-bit chunks of .txt file, f
 #
 ########################################
-def split2Nbits(f, N):
+def split2Nbits(data, N):
     if not (N == 1 or N == 2 or N == 4 or N == 8 or N == 16):
         print("Density must be a member of the set, S = {1, 2, 4, 8, 16}")
         return []
     
-    data = f.read()
     return [data[i:i+N] for i in range(0,len(data),N)]
 
 ########################################
@@ -84,7 +84,7 @@ def encodeData(im1D, encodeDensity, payload):
     return im1D
 
             
-def CandC(imFile, bytecodeFile, encodeDensity):
+def CandC(imFile, plaintextFile, encodeDensity, outImFile):
     # read in image of dog
     im = io.imread(imFile)
 
@@ -97,43 +97,31 @@ def CandC(imFile, bytecodeFile, encodeDensity):
     im1D = im.reshape(numpixels*4,1)
 
     # open binary code file
-    f = open(bytecodeFile, 'r')
+    binary_text = get_byte_code.main(plaintextFile, "")
+    print(binary_text)
 
     # split binary code file into N-bit chunks, where N = encodeDensity
-    data = split2Nbits(f,encodeDensity)
+    data = split2Nbits(binary_text,encodeDensity)
     im1D = encodeData(im1D, encodeDensity, data)
 
     # reshape image with encoded data into regular image form
     imMessage = im1D.reshape(H,W,4)
-
-    f.close()
     
-    io.imsave('encodedImage.png', imMessage)
+    io.imsave(outImFile, imMessage)
     return imMessage
-
-
-# encode density
-encodeDensity = 4
-
-# image file
-imFile = 'transparentImage.png'
-
-# bytecode file
-bytecodeFile = 'binary_code1.txt'
-
-# generate image with encoded data
-imMessage = CandC(imFile, bytecodeFile, encodeDensity)
 
 if __name__ == "__main__":
     args = sys.argv
     try:
         imFile = args[1]
         plaintextFile= args[2]
-        encodeDensity = args[3]
+        encodeDensity = int(args[3])
         outfile = args[4]
     except:
         print "usage: python binary_convert.py [image file] [plaintext-file-to-encode] [encode density] [output encoded image file]"
         sys.exit(1)
 
     # add Jake's function call1
-    encode(imFile, bytecodeFile, encodeDensity)
+    imMessage = CandC(imFile, plaintextFile, encodeDensity, outfile)
+    
+

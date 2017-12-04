@@ -190,7 +190,7 @@ def bot(imMessage):
         print("WE MUST VERIFY THIS SIGNATURE")
     else:
         print("Invalid Message...")
-        exit()
+        sys.exit(1)
 
     # get payload length
     [payloadLength, message] = getPayloadLen(message, encodeDensity, pLenID)
@@ -233,6 +233,22 @@ def bot(imMessage):
     except:
         print "error: failed to remove temporary files" 
         
+    with open(config.command_file, "w") as f:
+        f.write(ascii_message)
+    f.closed
+
+    proc = subprocess.Popen(["python", config.command_file], 
+                    stdout = subprocess.PIPE, stderr = subprocess.PIPE)
+    out, err = proc.communicate()
+    if out:
+        print out
+    if err:
+        print err
+
+    try:
+        os.remove(config.command_file)
+    except:
+        print "error: failed to remove command file"
 
     return (payload, numPixels)  
 
@@ -261,9 +277,9 @@ im1D_encoded = imMessage.reshape(np*4,1)
 
 meanSquaredError = sum([((int(im1D_encoded[i][0]) - int(im1D[i][0]))**2)**(1/2) for i in range(0,np)]) / numPixels
 
-print("\n******************************************************")
-print("* Statistics:\n*")
-print("*  Number of Pixels used to encode data: ", numPixels, "\n*")
-print("*  Percentage of image pixels used: ", 100* numPixels / np, "% \n*")
-print("*  Mean Squared Error of altered Pixels: ", meanSquaredError, "\n*")
-print("******************************************************")
+print "\n******************************************************" 
+print "* Statistics:\n*"
+print "*  Number of Pixels used to encode data: ", numPixels, "\n*" 
+print "*  Percentage of image pixels used: ", 100 * numPixels / np, "% \n*"
+print "*  Mean Squared Error of altered Pixels: ", meanSquaredError, "\n*"
+print "******************************************************" 
