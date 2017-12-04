@@ -72,7 +72,7 @@ def main(codefile, outfile):
     # binary text of the sha256 hash signature
     binary_signature = bin_of_string(signature)
 
-    # final binary: [initiator][signature][instructions][terminator]
+    # final binary: [initiator][signature][length of bytes][instructions]
     final_binary = binary_start + binary_signature + binary_length + binary_text
 
     # write binary message to outfile or stdout if none is specified
