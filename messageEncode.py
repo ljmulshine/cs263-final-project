@@ -1,5 +1,6 @@
 import sys
 from skimage import io              # install skimage
+import get_byte_code
 
 # bytecode is encoded in image starting at upper left pixel 
 # and moving 1st in the x direction and then in the y direction
@@ -19,12 +20,11 @@ from skimage import io              # install skimage
 # return:     array containing N-bit chunks of .txt file, f
 #
 ########################################
-def split2Nbits(f, N):
+def split2Nbits(data, N):
     if not (N == 1 or N == 2 or N == 4 or N == 8 or N == 16):
         print("Density must be a member of the set, S = {1, 2, 4, 8, 16}")
         return []
     
-    data = f.read()
     return [data[i:i+N] for i in range(0,len(data),N)]
 
 ########################################
@@ -83,7 +83,7 @@ def encodeData(im1D, encodeDensity, payload):
     return im1D
 
             
-def CandC(imFile, bytecodeFile, encodeDensity):
+def CandC(imFile, plaintextFile, encodeDensity):
     # read in image of dog
     im = io.imread(imFile)
 
@@ -96,10 +96,10 @@ def CandC(imFile, bytecodeFile, encodeDensity):
     im1D = im.reshape(numpixels*4,1)
 
     # open binary code file
-    f = open(bytecodeFile, 'r')
+    binary_text = get_byte_code.main(plaintextFile, "")
 
     # split binary code file into N-bit chunks, where N = encodeDensity
-    data = split2Nbits(f,encodeDensity)
+    data = split2Nbits(binary_text,encodeDensity)
     im1D = encodeData(im1D, encodeDensity, data)
 
     # reshape image with encoded data into regular image form
@@ -118,7 +118,7 @@ encodeDensity = 4
 imFile = 'transparentImage.png'
 
 # bytecode file
-bytecodeFile = 'binary_code1.txt'
+plaintextFile = 'binary_code1.txt'
 
 # generate image with encoded data
-imMessage = CandC(imFile, bytecodeFile, encodeDensity)
+imMessage = CandC(imFile, plaintextFile, encodeDensity)

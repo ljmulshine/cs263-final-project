@@ -190,7 +190,7 @@ def bot(imMessage):
         print("WE MUST VERIFY THIS SIGNATURE")
     else:
         print("Invalid Message...")
-        exit()
+        sys.exit(1)
 
     # get payload length
     [payloadLength, message] = getPayloadLen(message, encodeDensity, pLenID)
