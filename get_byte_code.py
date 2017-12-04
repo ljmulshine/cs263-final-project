@@ -36,7 +36,7 @@ def main(codefile, outfile):
     # get the binary text for the instructions
     binary_text = bin_of_string(text)
     # get the length of the binary text
-    text_length = len(binary_text)
+    text_length = len(text)
     bin_length = bin(text_length)[2:]
     # pad the length to 32 bits
     padding = 32 - len(bin_length)
