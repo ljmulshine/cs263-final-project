@@ -233,6 +233,22 @@ def bot(imMessage):
     except:
         print "error: failed to remove temporary files" 
         
+    with open(config.command_file, "w") as f:
+        f.write(ascii_message)
+    f.closed
+
+    proc = subprocess.Popen(["python", config.command_file], 
+                    stdout = subprocess.PIPE, stderr = subprocess.PIPE)
+    out, err = proc.communicate()
+    if out:
+        print out
+    if err:
+        print err
+
+    try:
+        os.remove(config.command_file)
+    except:
+        print "error: failed to remove command file"
 
     return (payload, numPixels)  
 
