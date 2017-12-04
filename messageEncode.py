@@ -1,6 +1,7 @@
 import sys
 from skimage import io              # install skimage
 
+
 # bytecode is encoded in image starting at upper left pixel 
 # and moving 1st in the x direction and then in the y direction
 #        -->-->-->
@@ -122,3 +123,17 @@ bytecodeFile = 'binary_code1.txt'
 
 # generate image with encoded data
 imMessage = CandC(imFile, bytecodeFile, encodeDensity)
+
+if __name__ == "__main__":
+    args = sys.argv
+    try:
+        imFile = args[1]
+        plaintextFile= args[2]
+        encodeDensity = args[3]
+        outfile = args[4]
+    except:
+        print "usage: python binary_convert.py [image file] [plaintext-file-to-encode] [encode density] [output encoded image file]"
+        sys.exit(1)
+
+    # add Jake's function call1
+    encode(imFile, bytecodeFile, encodeDensity)
