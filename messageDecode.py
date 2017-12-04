@@ -1,3 +1,5 @@
+import sys
+from skimage import io              # install skimage
 
 
 ##########################################################
@@ -188,6 +190,7 @@ def bot(imMessage):
     # get payload
     payload = getPayload(message,encodeDensity,payloadLength)
     return (payload, numPixels)  
+
 
 
 

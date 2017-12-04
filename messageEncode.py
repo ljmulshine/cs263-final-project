@@ -1,6 +1,5 @@
 import sys
 from skimage import io              # install skimage
-import matplotlib.pyplot as plt     # install matplotlib
 
 # bytecode is encoded in image starting at upper left pixel 
 # and moving 1st in the x direction and then in the y direction
@@ -88,11 +87,6 @@ def CandC(imFile, bytecodeFile, encodeDensity):
     # read in image of dog
     im = io.imread(imFile)
 
-    # show dog image
-    plt.figure()
-    plt.imshow(im)
-    plt.show()
-
     # get image dimensions
     H = im.shape[0]
     W = im.shape[1]
@@ -111,9 +105,6 @@ def CandC(imFile, bytecodeFile, encodeDensity):
     # reshape image with encoded data into regular image form
     imMessage = im1D.reshape(H,W,3)
 
-    plt.figure()
-    plt.imshow(imMessage)
-    plt.show()
     f.close()
     
     io.imsave('encodedImage.png', imMessage)
@@ -127,7 +118,7 @@ encodeDensity = 2
 imFile = 'dog.png'
 
 # bytecode file
-bytecodeFile = 'binary_code.txt'
+bytecodeFile = 'binary_code1.txt'
 
 # generate image with encoded data
 imMessage = CandC(imFile, bytecodeFile, encodeDensity)
