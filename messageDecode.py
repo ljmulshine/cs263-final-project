@@ -1,3 +1,5 @@
+import sys
+from skimage import io              # install skimage
 
 ##########################################################
 #  Decoding   
