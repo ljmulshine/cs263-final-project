@@ -25,9 +25,8 @@ def bin_of_string(string):
     return binary_text
 
 def main(codefile, outfile):
-    # get the binary strings of the magic strings
+    # get the binary string of the magic string
     binary_start = bin_of_string(config.initiator)
-    binary_end = bin_of_string(config.terminator)
 
     # read the text from the codefile
     with open(codefile, "r") as f:
@@ -36,6 +35,17 @@ def main(codefile, outfile):
     
     # get the binary text for the instructions
     binary_text = bin_of_string(text)
+    # get the length of the binary text
+    text_length = len(binary_text)
+    bin_length = bin(text_length)[2:]
+    # pad the length to 32 bits
+    padding = 32 - len(bin_length)
+    if padding >= 0:
+        binary_length = ('0' * padding) + bin_length
+    else:
+        # error if length is longer than 32 bits (dec(length) >= 2^32)
+        print "error: length of the binary text cannot be represented in 4 bytes"
+        sys.exit(1)
 
     # write to a temporary file for signing
     with open(config.tmp_file, "w") as f2:
@@ -63,8 +73,9 @@ def main(codefile, outfile):
     binary_signature = bin_of_string(signature)
 
     # final binary: [initiator][signature][instructions][terminator]
-    final_binary = binary_start + binary_signature + binary_text + binary_end
+    final_binary = binary_start + binary_signature + binary_length + binary_text
 
+    # write binary message to outfile or stdout if none is specified
     if outfile:
         with open(outfile, "w") as f3:
             f3.write(final_binary)
