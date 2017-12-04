@@ -1,4 +1,5 @@
 
+
 ##########################################################
 #  Decoding   
 ##########################################################
@@ -188,28 +189,5 @@ def bot(imMessage):
     payload = getPayload(message,encodeDensity,payloadLength)
     return (payload, numPixels)  
 
-imMessage = io.imread('encodedImage.png')
-[payload, numPixels] = bot(imMessage)
 
-################################
-#
-# ANALYSIS
-#
-################################
-im = io.imread('dog.png')
 
-# reshape original and encoded image into 1D array
-H = im.shape[0]
-W = im.shape[1]
-np = H*W
-im1D = im.reshape(np*3,1)
-im1D_encoded = imMessage.reshape(np*3,1)
-
-meanSquaredError = sum([((int(im1D_encoded[i][0]) - int(im1D[i][0]))**2)**(1/2) for i in range(0,np)]) / numPixels
-
-print("\n******************************************************")
-print("* Statistics:\n*")
-print("*  Number of Pixels used to encode data: ", numPixels, "\n*")
-print("*  Percentage of image pixels used: ", 100* numPixels / np, "% \n*")
-print("*  Mean Squared Error of altered Pixels: ", meanSquaredError, "\n*")
-print("******************************************************")
