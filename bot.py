@@ -3,6 +3,8 @@ import re
 import time
 import sys
 import bot_config as config
+from skimage import io
+import messageDecode
 
 # Globals
 seen_images_file = open(config.seen_images, 'r+')
@@ -36,11 +38,11 @@ def get_comment_image_urls(twitter_account, tweet_id):
 
 
 def process_image(image_url):
-	f = urllib2.urlopen(image_url)
-	data = f.read()
-	f.close()
-
-	# TODO: Extract binary code from image
+	
+	# Extract binary code from image
+	imMessage = io.imread(image_url)
+	[payload, numPixels] = messageDecode.bot(imMessage)
+	print payload
 
 	# TODO: Update twitter accounts
 
