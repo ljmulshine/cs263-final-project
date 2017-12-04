@@ -1,4 +1,7 @@
 import sys
+import os
+import bot_config as config
+import subprocess
 from skimage import io              # install skimage
 
 
@@ -38,6 +41,17 @@ def decode(p, N):
     d = str(bin(p % 2**N))[2:]
     d = d.zfill(N)
     return d
+
+def bin_to_ascii(string):
+    length = len(string)
+    plaintext = ""
+    for i in range(0, length, 8):
+        binary = string[i:i+8]
+        code = int(binary, 2)
+        char = chr(code)
+        plaintext += char
+
+    return plaintext
 
 ########################################
 #
@@ -173,7 +187,6 @@ def bot(imMessage):
     if (validMessage):
         print("Valid Message: Getting signature...")
         [signature, message] = getSignature(message, encodeDensity, sigLen)       
-        print("Signature: ", signature)
         print("WE MUST VERIFY THIS SIGNATURE")
     else:
         print("Invalid Message...")
@@ -188,6 +201,39 @@ def bot(imMessage):
 
     # get payload
     payload = getPayload(message,encodeDensity,payloadLength)
+
+    print("Signature: ", signature)
+
+    ascii_sig = bin_to_ascii(signature)
+    ascii_message = bin_to_ascii(payload)
+
+    with open(config.tmp_file, "w") as f:
+        f.write(payload)
+    f.closed
+    with open(config.tmp_sig, "w") as f:
+        f.write(ascii_sig)
+    f.closed
+
+    rsa_verify_cmd = config.verify_cmd.format(config.public_key,
+                        config.tmp_sig, config.tmp_file)
+    verify_proc = subprocess.Popen(rsa_verify_cmd, shell=True,
+                    stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    verification, err = verify_proc.communicate()
+
+    if err:
+        print "error verifying data: {}".format(err)
+        sys.exit(1)
+    if "Verified OK" not in verification:
+        print "failure to verify data with public key"
+        sys.exit(1)
+
+    try:
+        os.remove(config.tmp_file)
+        os.remove(config.tmp_sig)
+    except:
+        print "error: failed to remove temporary files" 
+        
+
     return (payload, numPixels)  
 
 
