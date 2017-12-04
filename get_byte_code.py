@@ -81,7 +81,7 @@ def main(codefile, outfile):
             f3.write(final_binary)
         f3.closed 
     else:
-        print final_binary
+        return final_binary
 
 if __name__ == "__main__":
     args = sys.argv
