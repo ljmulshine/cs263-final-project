@@ -3,7 +3,7 @@ initiator = "pr0blematic"
 
 # path to the private key for rsa signatures
 # created with the command 'ssh -t rsa'
-private_key = "/home/jake/.ssh/tmp_rsa"
+private_key = "/home/jsteeves/.ssh/tmp_rsa"
 
 # temporary file for signing the bytecode
 tmp_file = "tmp_bytecode.txt"
