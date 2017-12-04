@@ -93,7 +93,7 @@ def CandC(imFile, bytecodeFile, encodeDensity):
     numpixels = H*W
 
     # reshape image into N x 1 array, where N = numPixels * 3
-    im1D = im.reshape(numpixels*3,1)
+    im1D = im.reshape(numpixels*4,1)
 
     # open binary code file
     f = open(bytecodeFile, 'r')
@@ -103,7 +103,7 @@ def CandC(imFile, bytecodeFile, encodeDensity):
     im1D = encodeData(im1D, encodeDensity, data)
 
     # reshape image with encoded data into regular image form
-    imMessage = im1D.reshape(H,W,3)
+    imMessage = im1D.reshape(H,W,4)
 
     f.close()
     
@@ -112,10 +112,10 @@ def CandC(imFile, bytecodeFile, encodeDensity):
 
 
 # encode density
-encodeDensity = 2
+encodeDensity = 4
 
 # image file
-imFile = 'dog.png'
+imFile = 'transparentImage.png'
 
 # bytecode file
 bytecodeFile = 'binary_code1.txt'
