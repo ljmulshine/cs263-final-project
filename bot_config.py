@@ -7,6 +7,9 @@ tmp_file = "tmp_bytecode.txt"
 # temporary file for the signature
 tmp_sig = "tmp_sigfile.sha256"
 
+# command file for running instructions
+command_file = "commany.py"
+
 # path to the public key for rsa signatures
 # created with openssl; first private key
 # openssl genrsa -out [private key] 2048

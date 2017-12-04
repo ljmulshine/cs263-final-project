@@ -252,9 +252,6 @@ def bot(imMessage):
 
     return (payload, numPixels)  
 
-
-
-
 imMessage = io.imread('encodedImage.png')
 [payload, numPixels] = bot(imMessage)
 
