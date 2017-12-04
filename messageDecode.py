@@ -158,10 +158,9 @@ def bot(imMessage):
     identifier = "pr0blematic"
     binkey = [(bin(ord(identifier[i]))[2:]).zfill(8) for i in range(0,len(identifier))]
     binIdentifier = "".join(binkey)
-    binIdentifier = '0110011001100110'
 
     # signature specifications - ensure that signature size is >= (encodeDensity / 8) bytes
-    sigLen = 4 # update this with actual signature length in bytes
+    sigLen = 256 # update this with actual signature length in bytes
 
     # number of bytes used to represent the payload length
     pLenID = 4 # update this with actual payload identifier length in bytes
@@ -194,3 +193,31 @@ def bot(imMessage):
 
 
 
+imMessage = io.imread('encodedImage.png')
+[payload, numPixels] = bot(imMessage)
+
+f = open('test.txt','w')
+f.write(payload)
+
+################################
+#
+# ANALYSIS
+#
+################################
+im = io.imread('dog.png')
+
+# reshape original and encoded image into 1D array
+H = im.shape[0]
+W = im.shape[1]
+np = H*W
+im1D = im.reshape(np*3,1)
+im1D_encoded = imMessage.reshape(np*3,1)
+
+meanSquaredError = sum([((int(im1D_encoded[i][0]) - int(im1D[i][0]))**2)**(1/2) for i in range(0,np)]) / numPixels
+
+print("\n******************************************************")
+print("* Statistics:\n*")
+print("*  Number of Pixels used to encode data: ", numPixels, "\n*")
+print("*  Percentage of image pixels used: ", 100* numPixels / np, "% \n*")
+print("*  Mean Squared Error of altered Pixels: ", meanSquaredError, "\n*")
+print("******************************************************")
