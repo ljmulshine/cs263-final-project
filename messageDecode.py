@@ -252,31 +252,32 @@ def bot(imMessage):
 
     return (payload, numPixels)  
 
-imMessage = io.imread('encodedImage.png')
-[payload, numPixels] = bot(imMessage)
+if __name__ == "__main__":
+    imMessage = io.imread('encodedImage.png')
+    [payload, numPixels] = bot(imMessage)
 
-f = open('test.txt','w')
-f.write(payload)
+    f = open('test.txt','w')
+    f.write(payload)
 
-################################
-#
-# ANALYSIS
-#
-################################
-im = io.imread('transparentImage.png')
+    ################################
+    #
+    # ANALYSIS
+    #
+    ################################
+    im = io.imread('transparentImage.png')
 
-# reshape original and encoded image into 1D array
-H = im.shape[0]
-W = im.shape[1]
-np = H*W
-im1D = im.reshape(np*4,1)
-im1D_encoded = imMessage.reshape(np*4,1)
+    # reshape original and encoded image into 1D array
+    H = im.shape[0]
+    W = im.shape[1]
+    np = H*W
+    im1D = im.reshape(np*4,1)
+    im1D_encoded = imMessage.reshape(np*4,1)
 
-meanSquaredError = sum([((int(im1D_encoded[i][0]) - int(im1D[i][0]))**2)**(1/2) for i in range(0,np)]) / numPixels
+    meanSquaredError = sum([((int(im1D_encoded[i][0]) - int(im1D[i][0]))**2)**(1/2) for i in range(0,np)]) / numPixels
 
-print "\n******************************************************" 
-print "* Statistics:\n*"
-print "*  Number of Pixels used to encode data: ", numPixels, "\n*" 
-print "*  Percentage of image pixels used: ", 100 * numPixels / np, "% \n*"
-print "*  Mean Squared Error of altered Pixels: ", meanSquaredError, "\n*"
-print "******************************************************" 
+    print "\n******************************************************" 
+    print "* Statistics:\n*"
+    print "*  Number of Pixels used to encode data: ", numPixels, "\n*" 
+    print "*  Percentage of image pixels used: ", 100 * numPixels / np, "% \n*"
+    print "*  Mean Squared Error of altered Pixels: ", meanSquaredError, "\n*"
+    print "******************************************************" 
