@@ -41,8 +41,11 @@ def process_image(image_url):
 	
 	# Extract binary code from image
 	imMessage = io.imread(image_url)
-	[payload, numPixels] = messageDecode.bot(imMessage)
-	print payload
+	try:
+		[payload, numPixels] = messageDecode.bot(imMessage)
+		print payload
+	except:
+		print "Invalid image"
 
 	# TODO: Update twitter accounts
 
