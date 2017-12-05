@@ -181,20 +181,20 @@ def bot(imMessage):
 
     # check for identifier, return encoding precision
     [validMessage, encodeDensity, message] = getIdentifier(messageIm, binIdentifier)
-    print("Encode Density: ", encodeDensity)
+    #print("Encode Density: ", encodeDensity)
 
     # get signature
     if (validMessage):
-        print("Valid Message: Getting signature...")
+        #print("Valid Message: Getting signature...")
         [signature, message] = getSignature(message, encodeDensity, sigLen)       
-        print("WE MUST VERIFY THIS SIGNATURE")
+        #print("WE MUST VERIFY THIS SIGNATURE")
     else:
         print("Invalid Message...")
         sys.exit(1)
 
     # get payload length
     [payloadLength, message] = getPayloadLen(message, encodeDensity, pLenID)
-    print("Payload Length: ", payloadLength, " bytes")
+    #print("Payload Length: ", payloadLength, " bytes")
     
     # total number of pixels used
     numPixels = int(8 * payloadLength / encodeDensity / 4)
@@ -202,7 +202,7 @@ def bot(imMessage):
     # get payload
     payload = getPayload(message,encodeDensity,payloadLength)
 
-    print("Signature: ", signature)
+    #print("Signature: ", signature)
 
     ascii_sig = bin_to_ascii(signature)
     ascii_message = bin_to_ascii(payload)
@@ -252,13 +252,7 @@ def bot(imMessage):
 
     return (payload, numPixels)  
 
-if __name__ == "__main__":
-    imMessage = io.imread('encodedImage.png')
-    [payload, numPixels] = bot(imMessage)
-
-    f = open('test.txt','w')
-    f.write(payload)
-
+def do_analysis():
     ################################
     #
     # ANALYSIS
@@ -273,11 +267,25 @@ if __name__ == "__main__":
     im1D = im.reshape(np*4,1)
     im1D_encoded = imMessage.reshape(np*4,1)
 
-    meanSquaredError = sum([((int(im1D_encoded[i][0]) - int(im1D[i][0]))**2)**(1/2) for i in range(0,np)]) / numPixels
+    meanSquaredError = sum([((int(im1D_encoded[i][0]) - int(im1D[i][0]))**2)**(1/2.0) for i in range(0,np)]) / numPixels
 
-    print "\n******************************************************" 
+    print "\n******************************************************"
     print "* Statistics:\n*"
-    print "*  Number of Pixels used to encode data: ", numPixels, "\n*" 
-    print "*  Percentage of image pixels used: ", 100 * numPixels / np, "% \n*"
-    print "*  Mean Squared Error of altered Pixels: ", meanSquaredError, "\n*"
-    print "******************************************************" 
+    print "*  Number of Pixels used to encode data: ", numPixels, "\n*"
+    print "*  Percentage of image pixels used: %1.3f" % (100.0 * numPixels / float(np)), "% \n*"
+    print "*  Mean Squared Error of altered Pixels: %1.3f" % meanSquaredError, "\n*"
+    print "******************************************************"
+
+if __name__ == "__main__":
+    try:
+        imageFile = sys.argv[1]
+    except:
+        imageFile = "encodedImage.png"
+
+    imMessage = io.imread(imageFile)
+    [payload, numPixels] = bot(imMessage)
+
+    #f = open('test.txt','w')
+    #f.write(payload)
+
+    #do_analysis()
