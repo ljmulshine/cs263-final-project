@@ -10,9 +10,6 @@ import messageDecode
 seen_images_file = open(config.seen_images, 'r+')
 seen_images = map(str.rstrip, seen_images_file.readlines())
 
-twitter_accounts_file = open(config.twitter_accounts, 'r+')
-twitter_accounts_to_monitor = map(str.rstrip, twitter_accounts_file.readlines())
-
 
 def mark_image_seen(image_url):
 	seen_images.append(image_url)
@@ -47,13 +44,15 @@ def process_image(image_url):
 	except:
 		print "Invalid image"
 
-	# TODO: Update twitter accounts
-
 
 
 def main(sleep_timeout=300):
 
 	while True:
+
+		twitter_accounts_file = open(config.twitter_accounts, 'r+')
+		twitter_accounts_to_monitor = map(str.rstrip, twitter_accounts_file.readlines())
+		
 		for twitter_account in twitter_accounts_to_monitor:
 			print "Processing @" + twitter_account
 			
