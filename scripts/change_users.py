@@ -1,7 +1,5 @@
-new_users = ["realDonaldTrump", "NSAGov", "CIA", "FBI"]
+new_users = ["naval", "pt", "ManuKumar"]
 user_file = "\n".join(new_users)
-with open("data/twitter_accounts2.txt", "w") as f:
-    f.write(user_file)
+with open("data/twitter_accounts.txt", "w") as f:
+    f.write(user_file + "\n")
 f.closed
-print "Updating twitter accounts to check:"
-print user_file
