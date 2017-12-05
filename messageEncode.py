@@ -98,10 +98,12 @@ def CandC(imFile, plaintextFile, encodeDensity, outImFile):
 
     # open binary code file
     binary_text = get_byte_code.main(plaintextFile, "")
-    print(binary_text)
 
     # split binary code file into N-bit chunks, where N = encodeDensity
     data = split2Nbits(binary_text,encodeDensity)
+    if len(data) > numpixels * 3:
+	print "cannot fit plaintext file within image given the encode density, ", encodeDensity
+	sys.exit(1)
     im1D = encodeData(im1D, encodeDensity, data)
 
     # reshape image with encoded data into regular image form
