@@ -98,7 +98,7 @@ def CandC(imFile, plaintextFile, encodeDensity, outImFile):
 
     # open binary code file
     binary_text = get_byte_code.main(plaintextFile, "")
-    print(binary_text)
+    #print(binary_text)
 
     # split binary code file into N-bit chunks, where N = encodeDensity
     data = split2Nbits(binary_text,encodeDensity)
