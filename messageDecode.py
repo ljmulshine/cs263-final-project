@@ -169,7 +169,7 @@ def bot(imMessage):
     messageIm = imMessage.reshape(numpixels*4,1)
 
     # indentifier key - ensure that the identifier key size >= (encodeDensity / 8) bytes 
-    identifier = "pr0blematic"
+    identifier = config.identifier
     binkey = [(bin(ord(identifier[i]))[2:]).zfill(8) for i in range(0,len(identifier))]
     binIdentifier = "".join(binkey)
 

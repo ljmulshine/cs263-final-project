@@ -2,6 +2,9 @@
 seen_images = "data/seen_images.txt"
 twitter_accounts = "data/twitter_accounts.txt"
 
+# identifier to start image encoding
+identifier = "pr0blematic"
+
 # temporary file for verifying the bytecode
 tmp_file = "tmp_bytecode.txt"
 # temporary file for the signature
