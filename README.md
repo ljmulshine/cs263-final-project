@@ -5,6 +5,10 @@ System Usage:
 
 Requires the following python packages:
     scikit-image
+    urllib2
+    re
+    time
+    sys
 
 The "bot herder" can encode a bytecode file into an image with the following command: 
 
