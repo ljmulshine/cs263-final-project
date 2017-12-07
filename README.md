@@ -3,6 +3,9 @@ Security Systems Final Project Repository
 
 System Usage:
 
+Requires the following python packages:
+    scikit-image
+
 The "bot herder" can encode a bytecode file into an image with the following command: 
 
     $ python2.7 messageEncode.py [image file] [plaintext-file-to-encode] [encode density] [output encoded image file]
